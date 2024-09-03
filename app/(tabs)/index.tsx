@@ -40,7 +40,7 @@ export default function App() {
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     setScanned(true);
     setScannedData(data);
-    alert(`QR code com o tipo ${type} e dados ${data} foi escaneado!`);
+    Alert.alert('QR code Escaneado', `Tipo: ${type}\nDados: ${data}`);
   };
 
   const handleCopyToClipboard = async () => {
