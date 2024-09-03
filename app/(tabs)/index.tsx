@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Animated, Easing, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Clipboard from 'expo-clipboard';
+import { Vibration } from 'react-native';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -40,6 +41,7 @@ export default function App() {
   const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     setScanned(true);
     setScannedData(data);
+    Vibration.vibrate();
     Alert.alert('QR code Escaneado', `Tipo: ${type}\nDados: ${data}`);
   };
 
