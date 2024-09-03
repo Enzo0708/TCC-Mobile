@@ -61,7 +61,7 @@ export default function App() {
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        style={styles.camera}
       />
 
       {/* Overlay com o guia de centralização do QR Code */}
@@ -88,6 +88,7 @@ export default function App() {
 }
 
 const { width } = Dimensions.get('window');
+const buttonWidth = width * 0.6; // Define a largura dos botões para 60% da largura da tela
 const boxSize = width * 0.7;
 const cornerSize = 40; // Tamanho das bordas dos cantos (Ajustável)
 const cornerThickness = 6; // Espessura das bordas dos cantos (Ajustável)
@@ -98,6 +99,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  camera: {
+    flex: 1, // Preenche todo o espaço disponível
+    width: '100%',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -151,18 +156,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     bottom: 50,
+    alignItems: 'center',
+    width: '100%',
   },
   scanButton: {
     backgroundColor: 'red',
     padding: 15,
     borderRadius: 10, // Botão com bordas arredondadas
     alignItems: 'center',
+    width: buttonWidth, // Define a largura do botão
   },
   copyButton: {
     backgroundColor: 'red',
     padding: 15,
     borderRadius: 10, // Botão com bordas arredondadas
     alignItems: 'center',
+    width: buttonWidth, // Define a largura do botão
     marginTop: 10, // Margem para separar do botão de escanear novamente
   },
   scanButtonText: {
