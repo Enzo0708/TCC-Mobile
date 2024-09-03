@@ -1,7 +1,8 @@
 // App.tsx
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Animated, Easing } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Animated, Easing, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Clipboard from 'expo-clipboard';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -42,6 +43,13 @@ export default function App() {
     alert(`QR code com o tipo ${type} e dados ${data} foi escaneado!`);
   };
 
+  const handleCopyToClipboard = async () => {
+    if (scannedData) {
+      await Clipboard.setStringAsync(scannedData);
+      Alert.alert('Dados copiados!', 'Os dados foram copiados para a área de transferência.');
+    }
+  };
+
   if (hasPermission === null) {
     return <Text>Solicitando permissão para usar a câmera...</Text>;
   }
@@ -70,6 +78,9 @@ export default function App() {
             <Text style={styles.scanButtonText}>Escanear novamente</Text>
           </TouchableOpacity>
           {scannedData && <Text style={styles.dataText}>Dados: {scannedData}</Text>}
+          <TouchableOpacity style={styles.copyButton} onPress={handleCopyToClipboard}>
+            <Text style={styles.scanButtonText}>Copiar Dados</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -146,6 +157,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10, // Botão com bordas arredondadas
     alignItems: 'center',
+  },
+  copyButton: {
+    backgroundColor: 'red',
+    padding: 15,
+    borderRadius: 10, // Botão com bordas arredondadas
+    alignItems: 'center',
+    marginTop: 10, // Margem para separar do botão de escanear novamente
   },
   scanButtonText: {
     color: 'white',
