@@ -66,12 +66,24 @@ export default function App() {
         style={styles.camera}
       />
 
-      {/* Overlay com o guia de centralização do QR Code */}
+      {/* Overlay para escurecer a área fora do quadrado de foco */}
       <View style={styles.overlay}>
-        <Animated.View style={[styles.cornerTopLeft, { transform: [{ scale: pulseAnim }] }]} />
-        <Animated.View style={[styles.cornerTopRight, { transform: [{ scale: pulseAnim }] }]} />
-        <Animated.View style={[styles.cornerBottomLeft, { transform: [{ scale: pulseAnim }] }]} />
-        <Animated.View style={[styles.cornerBottomRight, { transform: [{ scale: pulseAnim }] }]} />
+        {/* Título centralizado */}
+        <Text style={styles.title}>Escanear QR-Code</Text>
+
+        {/* Área escurecida */}
+        <View style={styles.darkAreaTop} />
+        <View style={styles.darkAreaBottom} />
+        <View style={styles.darkAreaLeft} />
+        <View style={styles.darkAreaRight} />
+
+        {/* Quadrado de centralização do QR Code */}
+        <View style={styles.scanArea}>
+          <Animated.View style={[styles.cornerTopLeft, { transform: [{ scale: pulseAnim }] }]} />
+          <Animated.View style={[styles.cornerTopRight, { transform: [{ scale: pulseAnim }] }]} />
+          <Animated.View style={[styles.cornerBottomLeft, { transform: [{ scale: pulseAnim }] }]} />
+          <Animated.View style={[styles.cornerBottomRight, { transform: [{ scale: pulseAnim }] }]} />
+        </View>
       </View>
 
       {scanned && (
@@ -89,9 +101,8 @@ export default function App() {
   );
 }
 
-const { width } = Dimensions.get('window');
-const buttonWidth = width * 0.6; // Define a largura dos botões para 60% da largura da tela
-const boxSize = width * 0.7;
+const { width, height } = Dimensions.get('window');
+const boxSize = width * 0.7; // Tamanho do quadrado de escaneamento
 const cornerSize = 40; // Tamanho das bordas dos cantos (Ajustável)
 const cornerThickness = 6; // Espessura das bordas dos cantos (Ajustável)
 const cornerRadius = 12; // Raio de borda arredondada para os cantos
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   camera: {
-    flex: 1, // Preenche todo o espaço disponível
+    flex: 1,
     width: '100%',
   },
   overlay: {
@@ -111,49 +122,94 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  darkAreaTop: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: (height - boxSize) / 2, // Parte superior escurecida
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
+    zIndex: 1, // Certifica que o fundo escuro fique abaixo do título
+  },
+  darkAreaBottom: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: (height - boxSize) / 2, // Parte inferior escurecida
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
+    zIndex: 1,
+  },
+  darkAreaLeft: {
+    position: 'absolute',
+    top: (height - boxSize) / 2,
+    left: 0,
+    width: (width - boxSize) / 2, // Lado esquerdo escurecido
+    height: boxSize,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
+    zIndex: 1,
+  },
+  darkAreaRight: {
+    position: 'absolute',
+    top: (height - boxSize) / 2,
+    right: 0,
+    width: (width - boxSize) / 2, // Lado direito escurecido
+    height: boxSize,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
+    zIndex: 1,
+  },
+  scanArea: {
+    width: boxSize,
+    height: boxSize,
+    borderColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   cornerTopLeft: {
     position: 'absolute',
-    top: (Dimensions.get('window').height - boxSize) / 2,
-    left: (Dimensions.get('window').width - boxSize) / 2,
+    top: 0,
+    left: 0,
     width: cornerSize,
     height: cornerSize,
     borderTopWidth: cornerThickness,
     borderLeftWidth: cornerThickness,
     borderColor: 'red',
-    borderTopLeftRadius: cornerRadius, // Bordas arredondadas
+    borderTopLeftRadius: cornerRadius,
+    zIndex: 2,
   },
   cornerTopRight: {
     position: 'absolute',
-    top: (Dimensions.get('window').height - boxSize) / 2,
-    right: (Dimensions.get('window').width - boxSize) / 2,
+    top: 0,
+    right: 0,
     width: cornerSize,
     height: cornerSize,
     borderTopWidth: cornerThickness,
     borderRightWidth: cornerThickness,
     borderColor: 'red',
-    borderTopRightRadius: cornerRadius, // Bordas arredondadas
+    borderTopRightRadius: cornerRadius,
+    zIndex: 2,
   },
   cornerBottomLeft: {
     position: 'absolute',
-    bottom: (Dimensions.get('window').height - boxSize) / 2,
-    left: (Dimensions.get('window').width - boxSize) / 2,
+    bottom: 0,
+    left: 0,
     width: cornerSize,
     height: cornerSize,
     borderBottomWidth: cornerThickness,
     borderLeftWidth: cornerThickness,
     borderColor: 'red',
-    borderBottomLeftRadius: cornerRadius, // Bordas arredondadas
+    borderBottomLeftRadius: cornerRadius,
+    zIndex: 2,
   },
   cornerBottomRight: {
     position: 'absolute',
-    bottom: (Dimensions.get('window').height - boxSize) / 2,
-    right: (Dimensions.get('window').width - boxSize) / 2,
+    bottom: 0,
+    right: 0,
     width: cornerSize,
     height: cornerSize,
     borderBottomWidth: cornerThickness,
     borderRightWidth: cornerThickness,
     borderColor: 'red',
-    borderBottomRightRadius: cornerRadius, // Bordas arredondadas
+    borderBottomRightRadius: cornerRadius,
+    zIndex: 2,
   },
   buttonContainer: {
     position: 'absolute',
@@ -164,17 +220,17 @@ const styles = StyleSheet.create({
   scanButton: {
     backgroundColor: 'red',
     padding: 15,
-    borderRadius: 10, // Botão com bordas arredondadas
+    borderRadius: 10,
     alignItems: 'center',
-    width: buttonWidth, // Define a largura do botão
+    width: '60%',
   },
   copyButton: {
     backgroundColor: 'red',
     padding: 15,
-    borderRadius: 10, // Botão com bordas arredondadas
+    borderRadius: 10,
     alignItems: 'center',
-    width: buttonWidth, // Define a largura do botão
-    marginTop: 10, // Margem para separar do botão de escanear novamente
+    width: '60%',
+    marginTop: 10,
   },
   scanButtonText: {
     color: 'white',
@@ -187,5 +243,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
+  },
+  title: {
+    position: 'absolute',
+    top: (height - boxSize) / 2 - 110, // Ajuste para mover o título mais para cima
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    zIndex: 2, // Define a ordem do título acima do fundo escuro
   },
 });
