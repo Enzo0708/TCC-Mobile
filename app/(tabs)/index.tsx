@@ -86,6 +86,7 @@ export default function App() {
         </View>
       </View>
 
+      {/* Botões e dados escaneados */}
       {scanned && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.scanButton} onPress={() => setScanned(false)}>
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 1, // Para garantir que o overlay fique acima da câmera
   },
   darkAreaTop: {
     position: 'absolute',
@@ -128,7 +130,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: (height - boxSize) / 2, // Parte superior escurecida
     backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
-    zIndex: 1, // Certifica que o fundo escuro fique abaixo do título
   },
   darkAreaBottom: {
     position: 'absolute',
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: (height - boxSize) / 2, // Parte inferior escurecida
     backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
-    zIndex: 1,
   },
   darkAreaLeft: {
     position: 'absolute',
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     width: (width - boxSize) / 2, // Lado esquerdo escurecido
     height: boxSize,
     backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
-    zIndex: 1,
   },
   darkAreaRight: {
     position: 'absolute',
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     width: (width - boxSize) / 2, // Lado direito escurecido
     height: boxSize,
     backgroundColor: 'rgba(0, 0, 0, 0.6)', // Escurecido
-    zIndex: 1,
   },
   scanArea: {
     width: boxSize,
@@ -162,6 +160,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 2, // Para garantir que o quadrado de escaneamento fique por cima da parte preta
   },
   cornerTopLeft: {
     position: 'absolute',
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: cornerThickness,
     borderColor: 'red',
     borderTopLeftRadius: cornerRadius,
-    zIndex: 2,
   },
   cornerTopRight: {
     position: 'absolute',
@@ -185,7 +183,6 @@ const styles = StyleSheet.create({
     borderRightWidth: cornerThickness,
     borderColor: 'red',
     borderTopRightRadius: cornerRadius,
-    zIndex: 2,
   },
   cornerBottomLeft: {
     position: 'absolute',
@@ -197,7 +194,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: cornerThickness,
     borderColor: 'red',
     borderBottomLeftRadius: cornerRadius,
-    zIndex: 2,
   },
   cornerBottomRight: {
     position: 'absolute',
@@ -209,13 +205,13 @@ const styles = StyleSheet.create({
     borderRightWidth: cornerThickness,
     borderColor: 'red',
     borderBottomRightRadius: cornerRadius,
-    zIndex: 2,
   },
   buttonContainer: {
     position: 'absolute',
     bottom: 50,
     alignItems: 'center',
     width: '100%',
+    zIndex: 3, // Para garantir que os botões fiquem por cima da parte preta
   },
   scanButton: {
     backgroundColor: 'red',
@@ -243,6 +239,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
+    zIndex: 3, // Para garantir que os dados fiquem por cima da parte preta
   },
   title: {
     position: 'absolute',
@@ -251,6 +248,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    zIndex: 2, // Define a ordem do título acima do fundo escuro
+    zIndex: 3, // Para garantir que o título fique por cima da parte preta
   },
 });
